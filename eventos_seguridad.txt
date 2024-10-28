@@ -1,0 +1,11 @@
+2024-10-28 20:32:42.235578: Valor normal registrado: 19.97°C
+2024-10-28 20:32:47.069461: Valor normal registrado: 29.27°C
+2024-10-28 20:32:52.077256: Valor normal registrado: 20.25°C
+2024-10-28 20:32:57.248326: Valor normal registrado: 17.82°C
+2024-10-28 20:33:01.534260: Valor normal registrado: 25.19°C
+2024-10-28 20:39:29.787244: Valor normal registrado: 26.05°C
+2024-10-28 20:39:34.791185: Valor normal registrado: 23.71°C
+2024-10-28 20:39:39.803792: Valor normal registrado: 15.14°C
+2024-10-28 20:39:44.807680: Valor normal registrado: 27.51°C
+2024-10-28 20:39:49.820736: Valor normal registrado: 19.6°C
+2024-10-28 20:39:54.829437: Valor normal registrado: 22.28°C

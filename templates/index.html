@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Seguridad IoT</title>
+    <style>
+        /* Estilos básicos para la vista */
+        body { font-family: Arial, sans-serif; }
+        #logs { margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; text-align: center; }
+        #clear-button { margin-top: 20px; padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Panel de Seguridad para Dispositivos IoT</h1>
+    
+    <button id="clear-button">Limpiar Registros</button>
+    
+    <div id="logs">
+        <h2>Logs de Seguridad</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Índice</th>
+                    <th>Timestamp</th>
+                    <th>Data</th>
+                    <th>Hash</th>
+                    <th>Hash Anterior</th>
+                </tr>
+            </thead>
+            <tbody id="blockchain-data">
+                <!-- Los bloques se llenarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        async function loadBlockchain() {
+            try {
+                const response = await fetch('/api/blockchain');
+                const data = await response.json();
+                const tbody = document.getElementById("blockchain-data");
+                tbody.innerHTML = "";
+
+                data.forEach(block => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${block.index}</td>
+                        <td>${block.timestamp}</td>
+                        <td>${block.data}</td>
+                        <td>${block.hash}</td>
+                        <td>${block.prev_hash}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error al cargar la blockchain:", error);
+            }
+        }
+
+        socket.on("new_block", function(block) {
+            const tbody = document.getElementById("blockchain-data");
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${block.index}</td>
+                <td>${block.timestamp}</td>
+                <td>${block.data}</td>
+                <td>${block.hash}</td>
+                <td>${block.prev_hash}</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Limpiar registros al hacer clic en el botón
+        document.getElementById("clear-button").addEventListener("click", async () => {
+            if (confirm("¿Estás seguro de que quieres limpiar todos los registros? Esta acción no se puede deshacer.")) {
+                try {
+                    const response = await fetch('/api/limpiar', { method: 'POST' });
+                    if (response.ok) {
+                        alert("Blockchain y logs limpiados exitosamente");
+                        loadBlockchain(); // Recargar la tabla para mostrar que está vacía
+                    } else {
+                        alert("Error al limpiar registros");
+                    }
+                } catch (error) {
+                    console.error("Error al limpiar registros:", error);
+                }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", loadBlockchain);
+    </script>
+</body>
+</html>
