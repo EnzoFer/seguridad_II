@@ -1,0 +1,10 @@
+#!/bin/sh
+'''exec' "/home/enzofer/Escritorio/Facultad/5to/Seguridad 2/tp_final_seguridad_2/bin/python3" "$0" "$@"
+' '''
+# -*- coding: utf-8 -*-
+import re
+import sys
+from scapy.main import interact
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(interact())
